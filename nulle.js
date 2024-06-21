@@ -24,11 +24,12 @@ function draw() {
     }
     player.Display();
     //obstacle1.Display();
-    score();
+    //score();
     if(i % 60 == 0) {
         let obstacle = new Obstacle();
         listObstacles.push(obstacle);
     }
+    score();
     i++;
     if(lose) {
         noLoop();
@@ -36,8 +37,9 @@ function draw() {
 }
 
 function testCollision(ob) {
-    minimalDistance = player.rayon - ob.rayon;
-    d = dist(player.posX,player.posY, ob.posX, ob.posY) ;
+    //Prend en paramètre un objet obstacle.
+    minimalDistance = player.rayon + ob.rayon;
+    d = dist(player.posX,player.posY, ob.posX, ob.posY) ; //check coordonées de l'obstacle en paramètre par rapport au player
     if (d <= minimalDistance) {
         fill('red');
         lose = true;
@@ -46,15 +48,19 @@ function testCollision(ob) {
 }
 
 function score() {
+    //affiche le temps ou le score si perdu
     s = millis()/ 1000;
     fill('red');
     if(!lose) {
         
         puntos = s;
         text(`${round(s)}`,320, 420,80);
+      
     } 
     if (lose) {
-        text(`Score: ${round(puntos)}`, 320, 250, 70);
+        textAlign(CENTER, CENTER);
+        textSize(25);
+        text(`Score: ${round(puntos)}`, 320, 240);
     }
 }
 
@@ -72,12 +78,13 @@ class Obstacle {
 
 
     Display() {
+        //fonction display appelée dans le draw
         fill('red');
         this.HOrV(this.h_v);
         circle(this.posX, this.posY, this.rayon * 2);
     }
     HOrV(int) {
-
+        // check si l'obstacle va verticalement ou horizontalement et appelle la fonction du mouvement
         if(int == 0) {
             this.obstacleMoveHorizontal();
         }
@@ -86,6 +93,7 @@ class Obstacle {
         }
     }
     obstacleMoveVerical() {
+        //mouvement vertical de l'obstacle
         console.log("test");
         if(this.posY <= 3) {
             this.direction = 1;
@@ -98,6 +106,7 @@ class Obstacle {
     }
 
     obstacleMoveHorizontal() {
+        //mouvement horizontal de l'obstacle
         console.log("test");
         if(this.posX <= 3) {
             this.direction = 1;
@@ -122,6 +131,7 @@ class Player {
   }
 
     TestOutOfScreen() {
+        //check si le player est dans les limites du canvas et renvoi un feedback rouge s'il touche une paroi
         if(this.posX <= 25) {
             this.posX = 25;
             fill('red');
@@ -129,8 +139,7 @@ class Player {
             strokeWeight(5);
             line(0,0,0, 480);
             stroke(0);
-            strokeWeight(1);
-            
+            strokeWeight(1);   
         }
         if (this.posX >= 615) {
             fill('red');
@@ -162,6 +171,7 @@ class Player {
     }
 
     UpdatePositionCercle() {
+        //Gère les inputs pour le déplacement du cercle
         if(keyIsDown(DOWN_ARROW)) {
             this.posY += 5;
         }
