@@ -15,22 +15,28 @@ var h_v;
 
 function setup(){
     createCanvas(640, 480);
+    h_v = round(random(0,2));
 }
 
 function draw(){
     background(220);
-
+    
     testCollision();
     score();
 
+    fill('white');
     updatePositionCercle();
     testOutOfScreen();
-    fill('white');
+   
     circle(posX, posY, rayonPlayer * 2);
     
     fill('red');
-    //obstacleMoveHorizontal();
-    obstacleMoveVerical();
+    if(h_v == 1) {
+        this.obstacleMoveHorizontal();
+    } else {
+        this.obstacleMoveVerical();
+    }
+    
     circle(posObstacleX, posObstacleY, rayonObstacle * 2);
 
 }
@@ -53,22 +59,41 @@ function updatePositionCercle() {
 function testOutOfScreen() {
     if(posX <= 25) {
         posX = 25;
+        fill('red');
         stroke('red');
-        strokeWeight(10);
+        strokeWeight(5);
+        line(0,0,0, 480);
+        noStroke();
+        
     }
     if (posX >= 615) {
+        fill('red');
         posX= 615;
+        stroke('red');
+        strokeWeight(5);
+        line(640,0,640, 480);
+        noStroke();
     }
     if(posY <= 25) {
+        fill('red');
         posY = 25;
+        stroke('red');
+        strokeWeight(5);
+        line(0,0,640, 0);
+        noStroke();
     }
     if (posY >= 455) {
+        fill('red');
         posY= 455;
+        stroke('red');
+        strokeWeight(5);
+        line(0,480,640, 480);
+        noStroke();
     }
 }
 
 function obstacleMoveHorizontal() {
-  
+  console.log("test");
     if(posObstacleX <= 3) {
         direction = 1;
     } 
@@ -104,5 +129,14 @@ function testCollision() {
 }
 
 function score() {
- 
+    s = millis()/ 1000;
+    fill('red');
+    if(!lose) {
+        
+        puntos = s;
+        text(`${round(s)}`,320, 420,80);
+    } 
+    if (lose) {
+        text(`Score: ${round(puntos)}`, 320, 250, 70);
+    }
 }

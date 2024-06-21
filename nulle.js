@@ -1,85 +1,167 @@
-function Obstacle() {
-    this.posX = random(5, 630);
-    this.posY = random(5, 450);
-    this.h_v = random(0,1);
-    this.direction = 1;
-    this.speed = 5;
-    this.rayon = 3;
-    this.touche = false;
-    let d;
-    let minimalDistance;
+var listObstacles = [];
+var time;
+var player;
+var obstacle1;
+var minimalDistance;
+var d;
+var s;
+var puntos;
+var lose = false;
+var i = 1;
 
-    this.dessiner = function() {
-        fill('red');
-        circle(this.posX, this.posY, this.rayon * 2);
-    }
-    this.HOrV = function(int) {
-        if(int == 0) {
-            this.obstacleMoveHorizontal(this.posY);
-        }
-        if(int== 1 ) {
-            this.obstacleMoveVerical(this.posX);
-        }
-    }
-    this.obstacleMoveVerical = function(posObstacleY) {
+function setup(){
+    createCanvas(640, 480);
+    player = new Player();
+  obstacle1 = new Obstacle();
+  listObstacles.push(obstacle1);
   
-        if(posObstacleY <= 3) {
-            this.direction = 1;
-        } 
-        if (posObstacleY >= 477) {
-            this.direction = -1;
-        }
-    
-        posObstacleY = posObstacleY + direction * speed;
+}
+function draw() {
+    background(220);
+    for(let i = 0; i < listObstacles.length; i++) {
+        testCollision(listObstacles[i]);
+        listObstacles[i].Display();
     }
-
-    this.obstacleMoveHorizontal = function(posObstacleX) {
-  
-        if(posObstacleX <= 3) {
-            this.direction = 1;
-        } 
-        if (posObstacleX >= 637) {
-            this.direction = -1;
-        }
-    
-        posObstacleX = posObstacleX + this.direction * this.speed;
+    player.Display();
+    //obstacle1.Display();
+    score();
+    if(i % 60 == 0) {
+        let obstacle = new Obstacle();
+        listObstacles.push(obstacle);
     }
-
-    this.checkCollision = function(other){
-        minimalDistance = this.rayon + other.rayon;
-        d = dist(this.posX, this.posY, other.posX, other.posY);
-        if(d <= minimalDistance) {
-            this.touche = true;
-        }
+    i++;
+    if(lose) {
+        noLoop();
     }
 }
 
-function Player() {
+function testCollision(ob) {
+    minimalDistance = player.rayon - ob.rayon;
+    d = dist(player.posX,player.posY, ob.posX, ob.posY) ;
+    if (d <= minimalDistance) {
+        fill('red');
+        lose = true;
+    }
+    
+}
+
+function score() {
+    s = millis()/ 1000;
+    fill('red');
+    if(!lose) {
+        
+        puntos = s;
+        text(`${round(s)}`,320, 420,80);
+    } 
+    if (lose) {
+        text(`Score: ${round(puntos)}`, 320, 250, 70);
+    }
+}
+
+class Obstacle {
+    constructor (){
+        this.posX = random(5, 630);
+        this.posY = random(5, 450);
+        this.h_v = round(random(0,1));
+        this.direction = 1;
+        this.rayon = 3;
+        this.touche = false;
+        this.d = 0;
+
+    }
+
+
+    Display() {
+        fill('red');
+        this.HOrV(this.h_v);
+        circle(this.posX, this.posY, this.rayon * 2);
+    }
+    HOrV(int) {
+
+        if(int == 0) {
+            this.obstacleMoveHorizontal();
+        }
+        if(int== 1 ) {
+            this.obstacleMoveVerical();
+        }
+    }
+    obstacleMoveVerical() {
+        console.log("test");
+        if(this.posY <= 3) {
+            this.direction = 1;
+        } 
+        if (this.posY >= 477) {
+            this.direction = -1;
+        }
+    
+        this.posY += this.direction * 5;
+    }
+
+    obstacleMoveHorizontal() {
+        console.log("test");
+        if(this.posX <= 3) {
+            this.direction = 1;
+        } 
+        if (this.posX >= 637) {
+            this.direction = -1;
+        }
+    
+        this.posX += this.direction * 5;
+    }
+}
+
+
+class Player {
+
+  constructor() {
     this.posX = 320;
     this.posY = 240;
     this.rayon = 25;
-    this.points;
-    this.s;
-    this.lose = false;
+    this.points = 0;
+    this.s = 0;
+  }
 
-    this.TestOutOfScreen = function() {
+    TestOutOfScreen() {
         if(this.posX <= 25) {
             this.posX = 25;
+            fill('red');
             stroke('red');
-            strokeWeight(10);
+            strokeWeight(5);
+            line(0,0,0, 480);
+            stroke(0);
+            strokeWeight(1);
+            
         }
         if (this.posX >= 615) {
+            fill('red');
             this.posX= 615;
+            stroke('red');
+            strokeWeight(5);
+            line(640,0,640, 480);
+            stroke(0);
+            strokeWeight(1);
         }
         if(this.posY <= 25) {
+            fill('red');
             this.posY = 25;
+            stroke('red');
+            strokeWeight(5);
+            line(0,0,640, 0);
+            stroke(0);
+            strokeWeight(1);
         }
         if (this.posY >= 455) {
+            fill('red');
             this.posY= 455;
+            stroke('red');
+            strokeWeight(5);
+            line(0,480,640, 480);
+            stroke(0);
+            strokeWeight(1);
         }
     }
 
-    this.UpdatePositionCercle = function() {
+    UpdatePositionCercle() {
         if(keyIsDown(DOWN_ARROW)) {
             this.posY += 5;
         }
@@ -94,37 +176,14 @@ function Player() {
         }
     }
 
-    this.Score = function() {
-        fill('red');
-        this.s = millis()/ 1000;
-        
-        if(!this.lose) {
-            
-            puntos = s;
-            text(`${round(s)}`,320, 420,80);
-        } 
-        if (this.lose) {
-            text(`Score: ${round(this.points)}`, 320, 250, 70);
+    Display() {
+       
+        fill("white");
+        this.UpdatePositionCercle();
+        this.TestOutOfScreen();
+        if(lose) {
             fill('red');
         }
-    }
-
-    this.CheckLoose = function (list) {
-        for (let i = 0; i <= list.length; i++) {
-            if(list[i].touche) {
-                this.lose = true;
-            }
-        }
-    }
-
-    this.Display = function() {
-        if (!this.lose) {
-            fill("white");
-            this.UpdatePositionCercle();
-            this.TestOutOfScreen();
-            this.CheckLoose();
-        }
-        this.Score();
-        circle(this.posX, this.posY, rayon * 2);
+        circle(this.posX, this.posY, this.rayon * 2);
     }
 }
