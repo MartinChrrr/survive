@@ -13,9 +13,13 @@ var puntos;
 var lose = false;
 var h_v;
 
+var socket;
+
 function setup(){
     createCanvas(640, 480);
     h_v = round(random(0,2));
+
+    socket = io.connect('http://localhost:3000');
 }
 
 function draw(){
@@ -32,9 +36,9 @@ function draw(){
     
     fill('red');
     if(h_v == 1) {
-        this.obstacleMoveHorizontal();
+        obstacleMoveHorizontal();
     } else {
-        this.obstacleMoveVerical();
+        obstacleMoveVerical();
     }
     
     circle(posObstacleX, posObstacleY, rayonObstacle * 2);
@@ -93,7 +97,7 @@ function testOutOfScreen() {
 }
 
 function obstacleMoveHorizontal() {
-  console.log("test");
+ 
     if(posObstacleX <= 3) {
         direction = 1;
     } 
