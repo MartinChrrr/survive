@@ -11,6 +11,7 @@ var d;
 var s;
 var puntos;
 var lose = false;
+var h_v;
 
 function setup(){
     createCanvas(640, 480);
@@ -18,13 +19,15 @@ function setup(){
 
 function draw(){
     background(220);
+
+    testCollision();
+    score();
+
     updatePositionCercle();
     testOutOfScreen();
     fill('white');
-    testCollision();
-    
     circle(posX, posY, rayonPlayer * 2);
-    score();
+    
     fill('red');
     //obstacleMoveHorizontal();
     obstacleMoveVerical();
@@ -101,14 +104,5 @@ function testCollision() {
 }
 
 function score() {
-    s = millis()/ 1000;
-    fill('red');
-    if(!lose) {
-        
-        puntos = s;
-        text(`${round(s)}`,320, 420,80);
-    } 
-    if (lose) {
-        text(`Score: ${round(puntos)}`, 320, 250, 70);
-    }
+ 
 }
