@@ -97,7 +97,7 @@ class Obstacle {
     }
     obstacleMoveVerical() {
         //mouvement vertical de l'obstacle
-        console.log("test");
+        
         if(this.posY <= 3) {
             this.direction = 1;
         } 
@@ -110,7 +110,6 @@ class Obstacle {
 
     obstacleMoveHorizontal() {
         //mouvement horizontal de l'obstacle
-        console.log("test");
         if(this.posX <= 3) {
             this.direction = 1;
         } 
