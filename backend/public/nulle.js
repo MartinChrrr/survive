@@ -8,16 +8,22 @@ var s;
 var puntos;
 var lose = false;
 var i = 1;
-var socket;
+var socket = io();
 
 function setup(){
-    socket = io.connect('http://localhost:3000');
+    //socket = io.connect('http://localhost:3000');
     createCanvas(640, 480);
     player = new Player();
     obstacle1 = new Obstacle();
     listObstacles.push(obstacle1);
 
+    player.SendPos();
 
+    // Recevoir les positions des autres joueurs
+    // socket.on('pos', (data) => {
+    //     players[data.id] = data;
+    // });
+    socket.on('pos', DisplayOther);
 }
 function draw() {
     background(220);
@@ -38,6 +44,13 @@ function draw() {
         noLoop();
     }
 }
+
+
+function DisplayOther(data) {
+    fill("red");
+    circle(data.x, data.y, 50);
+}
+
 
 function testCollision(ob) {
     //Prend en paramètre un objet obstacle.
@@ -131,7 +144,14 @@ class Player {
     this.points = 0;
     this.s = 0;
   }
+    SendPos()  {
+        setInterval(() => {
+            socket.emit('pos', { id: socket.id, x: posX, y: posY });
+        }, 100);
 
+       
+
+    }
     TestOutOfScreen() {
         //check si le player est dans les limites du canvas et renvoi un feedback rouge s'il touche une paroi
         if(this.posX <= 25) {
@@ -196,6 +216,8 @@ class Player {
         if(lose) {
             fill('red');
         }
+        
         circle(this.posX, this.posY, this.rayon * 2);
+        //this.SendPos();
     }
 }
