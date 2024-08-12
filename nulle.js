@@ -71,8 +71,7 @@ class Obstacle {
         this.h_v = round(random(0,1));
         this.direction = 1;
         this.rayon = 3;
-        this.touche = false;
-        this.d = 0;
+
 
     }
 
@@ -126,8 +125,7 @@ class Player {
     this.posX = 320;
     this.posY = 240;
     this.rayon = 25;
-    this.points = 0;
-    this.s = 0;
+
   }
 
     TestOutOfScreen() {

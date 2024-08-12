@@ -123,7 +123,7 @@ function obstacleMoveVerical() {
 // ressources
 // https://p5js.org/examples/motion-circle-collision.html
 function testCollision() {
-    minimalDistance = rayonPlayer - rayonObstacle;
+    minimalDistance = rayonPlayer + rayonObstacle;
     d = dist(posObstacleX,posObstacleY, posX, posY) ;
     if (d <= minimalDistance) {
         fill('red');
