@@ -41,6 +41,7 @@ function draw(){
         obstacleMoveVerical();
     }
     
+    
     circle(posObstacleX, posObstacleY, rayonObstacle * 2);
 
 }

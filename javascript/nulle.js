@@ -7,17 +7,17 @@ var d;
 var s;
 var puntos;
 var lose = false;
-var i = 1;
+var i = 0;
 
 function setup(){
     createCanvas(640, 480);
     player = new Player();
-  obstacle1 = new Obstacle();
-  listObstacles.push(obstacle1);
+  //obstacle1 = new Obstacle();
+  //listObstacles.push(obstacle1);
   
 }
 function draw() {
-    background(220);
+    background("pink");
     for(let i = 0; i < listObstacles.length; i++) {
         testCollision(listObstacles[i]);
         listObstacles[i].Display();
@@ -44,7 +44,6 @@ function testCollision(ob) {
         fill('red');
         lose = true;
     }
-    
 }
 
 function score() {
@@ -54,7 +53,7 @@ function score() {
     if(!lose) {
         
         puntos = s;
-        text(`${round(s)}`,320, 420,80);
+        text(`${round(s)}`,320, 420);
       
     } 
     if (lose) {
@@ -71,10 +70,7 @@ class Obstacle {
         this.h_v = round(random(0,1));
         this.direction = 1;
         this.rayon = 3;
-
-
     }
-
 
     Display() {
         //fonction display appelée dans le draw
@@ -82,6 +78,7 @@ class Obstacle {
         this.HOrV(this.h_v);
         circle(this.posX, this.posY, this.rayon * 2);
     }
+
     HOrV(int) {
         // check si l'obstacle va verticalement ou horizontalement et appelle la fonction du mouvement
         if(int == 0) {
@@ -93,7 +90,7 @@ class Obstacle {
     }
     obstacleMoveVerical() {
         //mouvement vertical de l'obstacle
-        console.log("test");
+        //console.log("test");
         if(this.posY <= 3) {
             this.direction = 1;
         } 
@@ -101,12 +98,12 @@ class Obstacle {
             this.direction = -1;
         }
     
-        this.posY += this.direction * 5;
+        this.posY += this.direction * 2;
     }
 
     obstacleMoveHorizontal() {
         //mouvement horizontal de l'obstacle
-        console.log("test");
+        //console.log("test");
         if(this.posX <= 3) {
             this.direction = 1;
         } 
@@ -114,7 +111,7 @@ class Obstacle {
             this.direction = -1;
         }
     
-        this.posX += this.direction * 5;
+        this.posX += this.direction * 2;
     }
 }
 
@@ -186,7 +183,7 @@ class Player {
 
     Display() {
        
-        fill("white");
+        fill("blue");
         this.UpdatePositionCercle();
         this.TestOutOfScreen();
         if(lose) {
