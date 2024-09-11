@@ -3,6 +3,7 @@ var time;
 var player;
 var obstacle1;
 var minimalDistance;
+var speed = 5;
 var d;
 var s;
 var puntos;
@@ -98,7 +99,7 @@ class Obstacle {
             this.direction = -1;
         }
     
-        this.posY += this.direction * 2;
+        this.posY += this.direction * speed;
     }
 
     obstacleMoveHorizontal() {
@@ -111,7 +112,7 @@ class Obstacle {
             this.direction = -1;
         }
     
-        this.posX += this.direction * 2;
+        this.posX += this.direction * speed;
     }
 }
 
